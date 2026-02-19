@@ -87,6 +87,37 @@ button {
 .hidden {
   display:none;
 }
+
+  .button-row {
+  display:flex;
+  gap:16px;
+  margin-top:30px;
+}
+
+.btn-next {
+  background:#111;
+  color:white;
+  border:none;
+  border-radius:16px;
+  padding:16px 0;
+  font-size:15px;
+  cursor:pointer;
+  flex:1;
+}
+
+.btn-back {
+  background:#e5e7eb;
+  color:#111;
+  border:none;
+  border-radius:16px;
+  padding:16px 0;
+  font-size:15px;
+  cursor:pointer;
+  flex:1;
+}
+
+
+  
 </style>
 </head>
 
@@ -98,9 +129,9 @@ button {
   <div class="progress" id="progressText"></div>
   <div class="question-title" id="questionText"></div>
   <div id="optionsContainer"></div>
-  <div style="display:flex; gap:12px; margin-top:25px;">
-    <button id="backBtn" type="button" onclick="prevQuestion()" style="flex:1;background:#d1d5db;color:#111;">Back</button>
-    <button type="button" onclick="nextQuestion()" style="flex:2;">Next</button>
+  <div id="buttonContainer" class="button-row">
+    <button id="backBtn" type="button" onclick="prevQuestion()" class="btn-back">Back</button>
+    <button id="nextBtn" type="button" onclick="nextQuestion()" class="btn-next">Next</button>
   </div>
 </div>
 
@@ -211,12 +242,17 @@ function loadQuestion() {
   window.scrollTo({ top: 0, behavior: "instant" });
 
   const backBtn = document.getElementById("backBtn");
+const buttonContainer = document.getElementById("buttonContainer");
 
-  if (currentQuestion === 0) {
-    backBtn.style.visibility = "hidden";
-  } else {
-    backBtn.style.visibility = "visible";
-  }
+if (currentQuestion === 0) {
+  backBtn.style.display = "none";
+  buttonContainer.style.justifyContent = "center";
+  document.getElementById("nextBtn").style.flex = "1";
+} else {
+  backBtn.style.display = "block";
+  buttonContainer.style.justifyContent = "space-between";
+  document.getElementById("nextBtn").style.flex = "1";
+}
 
 }
 
