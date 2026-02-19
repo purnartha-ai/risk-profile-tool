@@ -14,8 +14,7 @@ body {
   font-family:'Poppins', sans-serif;
   display:flex;
   justify-content:center;
-  align-items:center;
-  height:100vh;
+  padding:60px 20px;
 }
 
 .card {
@@ -204,6 +203,9 @@ function loadQuestion() {
       </label>
     `;
   });
+  
+  window.scrollTo({ top: 0, behavior: "instant" });
+
 }
 
 function nextQuestion() {
@@ -241,6 +243,7 @@ function showResult() {
   document.getElementById("finalProfile").innerText = profile;
   document.getElementById("finalScore").innerText =
     "Total Score: " + totalScore;
+  window.scrollTo(0, 0);
 }
 
 loadQuestion();
