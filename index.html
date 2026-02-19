@@ -1,0 +1,135 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Risk Profile Questionnaire</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+body {
+  font-family: Poppins, sans-serif;
+  background:#f3f6fb;
+  padding:40px;
+}
+.container {
+  max-width:800px;
+  margin:auto;
+  background:white;
+  padding:40px;
+  border-radius:12px;
+}
+.question {
+  margin-bottom:25px;
+}
+button {
+  padding:12px 20px;
+  background:#111;
+  color:white;
+  border:none;
+  cursor:pointer;
+}
+.result {
+  margin-top:30px;
+  font-size:20px;
+  font-weight:bold;
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+<h2>Risk Profile Questionnaire</h2>
+
+<form id="riskForm">
+
+<div class="question">
+<p><strong>Which of the following best describes your current stage of life?</strong></p>
+<label><input type="radio" name="Q1" value="1"> Single with few financial burdens. Ready to accumulate wealth for future short term and long-term goals.</label><br>
+<label><input type="radio" name="Q1" value="2"> A couple without children. Preparing for the future by establishing a home. Expecting to have or already have a high purchase rate of household and consumer items.</label><br>
+<label><input type="radio" name="Q1" value="3"> Young family with a home. You have a mortgage and childcare costs and maintain only small cash balances.</label><br>
+<label><input type="radio" name="Q1" value="4"> Mature family. You are in your peak earning years and your mortgage is under control. You both work and you may or may not have children that are growing up or have left home. You're ready to start thinking about your retirement years.</label><br>
+<label><input type="radio" name="Q1" value="5"> Preparing for retirement. You own your home and have few financial burdens; you want to ensure you can afford a comfortable retirement.</label><br>
+<label><input type="radio" name="Q1" value="6"> Retired. You rely on existing funds and investments to maintain your lifestyle in retirement. You may already be receiving a Government pension and/or Superannuation pension.</label>
+</div>
+
+<div class="question">
+<p><strong>How familiar are you with investment matters?</strong></p>
+<label><input type="radio" name="Q2" value="1"> Not familiar at all with investments and feel uncomfortable with the complexity.</label><br>
+<label><input type="radio" name="Q2" value="2"> Not very familiar when it comes to investments.</label><br>
+<label><input type="radio" name="Q2" value="3"> Somewhat familiar. I don't fully understand investments, including the share market.</label><br>
+<label><input type="radio" name="Q2" value="4"> Fairly familiar. I understand the various factors which influence investment performance.</label><br>
+<label><input type="radio" name="Q2" value="5"> Very familiar. I use research and other investment information to make investment decisions. I understand the various factors which influence investment performance.</label>
+</div>
+
+<div class="question">
+<p><strong>How long have you been investing, not counting your own home or bank type deposits?</strong></p>
+<label><input type="radio" name="Q3" value="3"> 3 years or more.</label><br>
+<label><input type="radio" name="Q3" value="2"> Up to 3 years.</label><br>
+<label><input type="radio" name="Q3" value="1"> This is my / our first investment.</label>
+</div>
+
+<div class="question">
+<p><strong>How long would you invest the majority of your money before you think you would need access to it? (Assuming you already have plans in place to meet short term cashflow and/or emergencies.)</strong></p>
+<label><input type="radio" name="Q4" value="1"> In 2 years or less.</label><br>
+<label><input type="radio" name="Q4" value="2"> Within 3-5 years.</label><br>
+<label><input type="radio" name="Q4" value="3"> Within 6-10 years.</label><br>
+<label><input type="radio" name="Q4" value="4"> Not for 10+ years.</label>
+</div>
+
+<div class="question">
+<p><strong>Assume you had a Fixed investment portfolio worth Rs 1,00,000. If, due to market conditions, your portfolio fell to Rs 85,000 within a short period, say a month, would you: (If your portfolio has experienced a drop like this, choose the answer that corresponds to your actual behaviour.)</strong></p>
+<label><input type="radio" name="Q5" value="1"> Sell all of the investments. You do not intend to take risks.</label><br>
+<label><input type="radio" name="Q5" value="2"> Sell a portion of your portfolio to cut your losses and reinvest into more secure investment sectors.</label><br>
+<label><input type="radio" name="Q5" value="3"> Hold the investment and sell nothing, expecting performance to improve.</label><br>
+<label><input type="radio" name="Q5" value="4"> Invest more funds to lower your average investment price.</label>
+</div>
+
+<div class="question">
+<p><strong>How secure is your current & future income from sources such as salary, pensions or other investments?</strong></p>
+<label><input type="radio" name="Q6" value="1"> Not secure.</label><br>
+<label><input type="radio" name="Q6" value="2"> Somewhat secure.</label><br>
+<label><input type="radio" name="Q6" value="3"> Fairly secure.</label><br>
+<label><input type="radio" name="Q6" value="4"> Very secure.</label>
+</div>
+
+<button type="button" onclick="calculateRisk()">Calculate Risk Profile</button>
+
+</form>
+
+<div id="result" class="result"></div>
+
+</div>
+
+<script>
+
+function calculateRisk() {
+
+  let total = 0;
+
+  for (let i = 1; i <= 6; i++) {
+    const selected = document.querySelector(`input[name="Q${i}"]:checked`);
+    if (!selected) {
+      alert("Please answer all questions.");
+      return;
+    }
+    total += parseInt(selected.value);
+  }
+
+  let profile = "";
+
+  if (total <= 6) profile = "Conservative";
+  else if (total <= 16) profile = "Balanced";
+  else if (total <= 28) profile = "Assertive Growth";
+  else if (total <= 38) profile = "Aggressive Growth";
+  else profile = "Very Aggressive";
+
+  document.getElementById("result").innerHTML =
+    "Your Risk Profile: " + profile + "<br>Total Score: " + total;
+}
+
+</script>
+
+</body>
+</html>
