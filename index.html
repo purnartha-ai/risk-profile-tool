@@ -98,7 +98,10 @@ button {
   <div class="progress" id="progressText"></div>
   <div class="question-title" id="questionText"></div>
   <div id="optionsContainer"></div>
-  <button onclick="nextQuestion()">Next</button>
+  <div style="display:flex; gap:12px; margin-top:25px;">
+    <button id="backBtn" type="button" onclick="prevQuestion()" style="flex:1;background:#d1d5db;color:#111;">Back</button>
+    <button type="button" onclick="nextQuestion()" style="flex:2;">Next</button>
+  </div>
 </div>
 
 <div id="resultContainer" class="hidden result">
@@ -122,7 +125,7 @@ const questions = [
     { text: "Young family with a home. You have a mortgage and childcare costs and maintain only small cash balances.", score: 3 },
     { text: "Mature family. You are in your peak earning years and your mortgage is under control. You both work and you may or may not have children that are growing up or have left home. You're ready to start thinking about your retirement years.", score: 4 },
     { text: "Preparing for retirement. You own your home and have few financial burdens; you want to ensure you can afford a comfortable retirement.", score: 5 },
-    { text: "Retired. You rely on existing funds and investments to maintain your lifestyle in retirement.", score: 6 }
+    { text: "Retired. You rely on existing funds and investments to maintain your lifestyle in retirement. You may already be receiving a Government pension and/or Superannuation pension.", score: 6 }
   ]
 },
 {
@@ -132,7 +135,7 @@ const questions = [
     { text: "Not very familiar when it comes to investments.", score: 2 },
     { text: "Somewhat familiar. I don't fully understand investments, including the share market.", score: 3 },
     { text: "Fairly familiar. I understand the various factors which influence investment performance.", score: 4 },
-    { text: "Very familiar. I use research and other investment information to make investment decisions.", score: 5 }
+    { text: "Very familiar. I use research and other investment information to make investment decisions. I understand the various factors which influence investment performance.", score: 5 }
   ]
 },
 {
@@ -140,11 +143,11 @@ const questions = [
   options: [
     { text: "3 years or more.", score: 3 },
     { text: "Up to 3 years.", score: 2 },
-    { text: "This is my first investment.", score: 1 }
+    { text: "This is my / our first investment.", score: 1 }
   ]
 },
 {
-  text: "How long would you invest the majority of your money?",
+  text: "How long would you invest the majority of your money before you think you would need access to it? (Assuming you already have plans in place to meet short term cashflow and/or emergencies.)",
   options: [
     { text: "In 2 years or less.", score: 1 },
     { text: "Within 3-5 years.", score: 2 },
@@ -153,16 +156,16 @@ const questions = [
   ]
 },
 {
-  text: "If your portfolio fell to Rs 85,000 within a short period, would you:",
+  text: "Assume you had a Fixed investment portfolio worth Rs 1,00,000. If, due to market conditions, your portfolio fell to Rs 85,000 within a short period, say a month, would you: (If your portfolio has experienced a drop like this, choose the answer that corresponds to your actual behaviour.)",
   options: [
-    { text: "Sell all of the investments.", score: 1 },
-    { text: "Sell a portion.", score: 2 },
-    { text: "Hold the investment.", score: 3 },
-    { text: "Invest more funds.", score: 4 }
+    { text: "Sell all of the investments. You do not intend to take risks.", score: 1 },
+    { text: "Sell a portion of your portfolio to cut your losses and reinvest into more secure investment sectors.", score: 2 },
+    { text: "Hold the investment and sell nothing, expecting performance to improve.", score: 3 },
+    { text: "Invest more funds to lower your average investment price.", score: 4 }
   ]
 },
 {
-  text: "How secure is your current & future income?",
+  text: "How secure is your current & future income from sources such as salary, pensions or other investments?",
   options: [
     { text: "Not secure.", score: 1 },
     { text: "Somewhat secure.", score: 2 },
@@ -183,7 +186,7 @@ const RISK_PROFILE_SLABS = [
 ];
 
 let currentQuestion = 0;
-let totalScore = 0;
+let answers = new Array(questions.length).fill(null);
 
 function loadQuestion() {
   const q = questions[currentQuestion];
@@ -198,7 +201,8 @@ function loadQuestion() {
   q.options.forEach(opt => {
     container.innerHTML += `
       <label class="option">
-        <input type="radio" name="option" value="${opt.score}">
+        <input type="radio" name="option" value="${opt.score}"
+        ${answers[currentQuestion] === opt.score ? "checked" : ""}>
         <div class="option-text">${opt.text}</div>
       </label>
     `;
@@ -206,16 +210,27 @@ function loadQuestion() {
   
   window.scrollTo({ top: 0, behavior: "instant" });
 
+  const backBtn = document.getElementById("backBtn");
+
+  if (currentQuestion === 0) {
+    backBtn.style.visibility = "hidden";
+  } else {
+    backBtn.style.visibility = "visible";
+  }
+
 }
 
 function nextQuestion() {
+
   const selected = document.querySelector('input[name="option"]:checked');
   if (!selected) {
     alert("Please select an option.");
     return;
   }
 
-  totalScore += parseInt(selected.value);
+  // Save selected score
+  answers[currentQuestion] = parseInt(selected.value);
+
   currentQuestion++;
 
   if (currentQuestion < questions.length) {
@@ -224,7 +239,7 @@ function nextQuestion() {
     showResult();
   }
 }
-
+  
 function determineRiskProfile(score) {
   for (let slab of RISK_PROFILE_SLABS) {
     if (score >= slab.min && score <= slab.max) {
@@ -234,7 +249,17 @@ function determineRiskProfile(score) {
   return "Unknown";
 }
 
+function prevQuestion() {
+  if (currentQuestion === 0) return;
+  
+  currentQuestion--;
+  loadQuestion();
+}
+
 function showResult() {
+
+  let totalScore = answers.reduce((sum, val) => sum + val, 0);
+
   document.getElementById("questionContainer").classList.add("hidden");
   document.getElementById("resultContainer").classList.remove("hidden");
 
@@ -243,10 +268,13 @@ function showResult() {
   document.getElementById("finalProfile").innerText = profile;
   document.getElementById("finalScore").innerText =
     "Total Score: " + totalScore;
+
   window.scrollTo(0, 0);
 }
 
 loadQuestion();
+
+  
 
 </script>
 
