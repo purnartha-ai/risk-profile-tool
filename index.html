@@ -11,147 +11,169 @@
 body {
   margin:0;
   background:#eef2f7;
-  font-family:Poppins, sans-serif;
+  font-family:'Poppins', sans-serif;
   display:flex;
   justify-content:center;
-  padding:40px 20px;
+  align-items:center;
+  height:100vh;
 }
 
-.container {
-  max-width:800px;
-  width:100%;
+.card {
+  width:720px;
+  max-width:95%;
   background:white;
-  padding:40px;
-  border-radius:18px;
+  padding:45px;
+  border-radius:22px;
   box-shadow:0 20px 40px rgba(0,0,0,0.06);
 }
 
-h2 {
-  margin-bottom:30px;
+.progress {
+  font-size:14px;
+  color:#6b7280;
+  margin-bottom:18px;
 }
 
-.question {
-  margin-bottom:30px;
-}
-
-.question p {
+.question-title {
+  font-size:24px;
   font-weight:600;
-  margin-bottom:15px;
+  margin-bottom:30px;
 }
 
-label {
-  display:block;
-  padding:16px;
+.option {
   border:1px solid #e5e7eb;
-  border-radius:14px;
-  margin-bottom:12px;
+  border-radius:16px;
+  padding:18px 20px;
+  margin-bottom:16px;
   cursor:pointer;
   transition:0.2s;
+  display:flex;
+  align-items:flex-start;
+  gap:12px;
 }
 
-label:hover {
+.option:hover {
   background:#f9fafb;
 }
 
-input[type="radio"] {
-  margin-right:10px;
+.option input {
+  margin-top:4px;
+  flex-shrink:0;
+}
+
+.option-text {
+  line-height:1.5;
 }
 
 button {
   width:100%;
-  padding:14px;
+  margin-top:25px;
+  padding:15px;
   background:#111;
   color:white;
   border:none;
   border-radius:14px;
   font-size:15px;
   cursor:pointer;
-  margin-top:10px;
 }
 
 .result {
-  margin-top:30px;
-  padding:25px;
-  background:#f9fafb;
-  border-radius:14px;
   text-align:center;
 }
 
-.result h3 {
-  margin:0 0 10px 0;
+.result h2 {
+  font-size:28px;
+  margin-bottom:10px;
+}
+
+.hidden {
+  display:none;
 }
 </style>
 </head>
 
 <body>
 
-<div class="container">
+<div class="card">
 
-<h2>Risk Profile Questionnaire</h2>
-
-<form id="riskForm">
-
-<!-- KEEPING YOUR EXACT QUESTIONS -->
-
-<div class="question">
-<p><strong>Which of the following best describes your current stage of life?</strong></p>
-<label><input type="radio" name="Q1" value="1"> Single with few financial burdens. Ready to accumulate wealth for future short term and long-term goals.</label>
-<label><input type="radio" name="Q1" value="2"> A couple without children. Preparing for the future by establishing a home. Expecting to have or already have a high purchase rate of household and consumer items.</label>
-<label><input type="radio" name="Q1" value="3"> Young family with a home. You have a mortgage and childcare costs and maintain only small cash balances.</label>
-<label><input type="radio" name="Q1" value="4"> Mature family. You are in your peak earning years and your mortgage is under control. You both work and you may or may not have children that are growing up or have left home. You're ready to start thinking about your retirement years.</label>
-<label><input type="radio" name="Q1" value="5"> Preparing for retirement. You own your home and have few financial burdens; you want to ensure you can afford a comfortable retirement.</label>
-<label><input type="radio" name="Q1" value="6"> Retired. You rely on existing funds and investments to maintain your lifestyle in retirement.</label>
+<div id="questionContainer">
+  <div class="progress" id="progressText"></div>
+  <div class="question-title" id="questionText"></div>
+  <div id="optionsContainer"></div>
+  <button onclick="nextQuestion()">Next</button>
 </div>
 
-<div class="question">
-<p><strong>How familiar are you with investment matters?</strong></p>
-<label><input type="radio" name="Q2" value="1"> Not familiar at all with investments and feel uncomfortable with the complexity.</label>
-<label><input type="radio" name="Q2" value="2"> Not very familiar when it comes to investments.</label>
-<label><input type="radio" name="Q2" value="3"> Somewhat familiar. I don't fully understand investments, including the share market.</label>
-<label><input type="radio" name="Q2" value="4"> Fairly familiar. I understand the various factors which influence investment performance.</label>
-<label><input type="radio" name="Q2" value="5"> Very familiar. I use research and other investment information to make investment decisions.</label>
+<div id="resultContainer" class="hidden result">
+  <h2>Your Risk Profile</h2>
+  <div id="finalProfile" style="font-size:24px;font-weight:600;"></div>
+  <div id="finalScore" style="margin-top:8px;color:#6b7280;"></div>
 </div>
-
-<div class="question">
-<p><strong>How long have you been investing?</strong></p>
-<label><input type="radio" name="Q3" value="3"> 3 years or more.</label>
-<label><input type="radio" name="Q3" value="2"> Up to 3 years.</label>
-<label><input type="radio" name="Q3" value="1"> This is my first investment.</label>
-</div>
-
-<div class="question">
-<p><strong>How long would you invest the majority of your money?</strong></p>
-<label><input type="radio" name="Q4" value="1"> In 2 years or less.</label>
-<label><input type="radio" name="Q4" value="2"> Within 3-5 years.</label>
-<label><input type="radio" name="Q4" value="3"> Within 6-10 years.</label>
-<label><input type="radio" name="Q4" value="4"> Not for 10+ years.</label>
-</div>
-
-<div class="question">
-<p><strong>If your portfolio fell to Rs 85,000, would you:</strong></p>
-<label><input type="radio" name="Q5" value="1"> Sell all investments.</label>
-<label><input type="radio" name="Q5" value="2"> Sell a portion.</label>
-<label><input type="radio" name="Q5" value="3"> Hold investments.</label>
-<label><input type="radio" name="Q5" value="4"> Invest more funds.</label>
-</div>
-
-<div class="question">
-<p><strong>How secure is your current & future income?</strong></p>
-<label><input type="radio" name="Q6" value="1"> Not secure.</label>
-<label><input type="radio" name="Q6" value="2"> Somewhat secure.</label>
-<label><input type="radio" name="Q6" value="3"> Fairly secure.</label>
-<label><input type="radio" name="Q6" value="4"> Very secure.</label>
-</div>
-
-<button type="button" onclick="calculateRisk()">Calculate Risk Profile</button>
-
-</form>
-
-<div id="result" class="result" style="display:none;"></div>
 
 </div>
 
 <script>
+
+// ======== QUESTIONS (YOUR EXACT CONTENT) ========
+
+const questions = [
+{
+  text: "Which of the following best describes your current stage of life?",
+  options: [
+    { text: "Single with few financial burdens. Ready to accumulate wealth for future short term and long-term goals.", score: 1 },
+    { text: "A couple without children. Preparing for the future by establishing a home. Expecting to have or already have a high purchase rate of household and consumer items.", score: 2 },
+    { text: "Young family with a home. You have a mortgage and childcare costs and maintain only small cash balances.", score: 3 },
+    { text: "Mature family. You are in your peak earning years and your mortgage is under control. You both work and you may or may not have children that are growing up or have left home. You're ready to start thinking about your retirement years.", score: 4 },
+    { text: "Preparing for retirement. You own your home and have few financial burdens; you want to ensure you can afford a comfortable retirement.", score: 5 },
+    { text: "Retired. You rely on existing funds and investments to maintain your lifestyle in retirement.", score: 6 }
+  ]
+},
+{
+  text: "How familiar are you with investment matters?",
+  options: [
+    { text: "Not familiar at all with investments and feel uncomfortable with the complexity.", score: 1 },
+    { text: "Not very familiar when it comes to investments.", score: 2 },
+    { text: "Somewhat familiar. I don't fully understand investments, including the share market.", score: 3 },
+    { text: "Fairly familiar. I understand the various factors which influence investment performance.", score: 4 },
+    { text: "Very familiar. I use research and other investment information to make investment decisions.", score: 5 }
+  ]
+},
+{
+  text: "How long have you been investing, not counting your own home or bank type deposits?",
+  options: [
+    { text: "3 years or more.", score: 3 },
+    { text: "Up to 3 years.", score: 2 },
+    { text: "This is my first investment.", score: 1 }
+  ]
+},
+{
+  text: "How long would you invest the majority of your money?",
+  options: [
+    { text: "In 2 years or less.", score: 1 },
+    { text: "Within 3-5 years.", score: 2 },
+    { text: "Within 6-10 years.", score: 3 },
+    { text: "Not for 10+ years.", score: 4 }
+  ]
+},
+{
+  text: "If your portfolio fell to Rs 85,000 within a short period, would you:",
+  options: [
+    { text: "Sell all of the investments.", score: 1 },
+    { text: "Sell a portion.", score: 2 },
+    { text: "Hold the investment.", score: 3 },
+    { text: "Invest more funds.", score: 4 }
+  ]
+},
+{
+  text: "How secure is your current & future income?",
+  options: [
+    { text: "Not secure.", score: 1 },
+    { text: "Somewhat secure.", score: 2 },
+    { text: "Fairly secure.", score: 3 },
+    { text: "Very secure.", score: 4 }
+  ]
+}
+];
+
+// ======== SLABS ========
 
 const RISK_PROFILE_SLABS = [
   { min: 0,  max: 6,  profile: "Conservative" },
@@ -161,34 +183,67 @@ const RISK_PROFILE_SLABS = [
   { min: 39, max: 40, profile: "Assertive Growth" }
 ];
 
-function calculateRisk() {
+let currentQuestion = 0;
+let totalScore = 0;
 
-  let total = 0;
+function loadQuestion() {
+  const q = questions[currentQuestion];
+  document.getElementById("progressText").innerText =
+    "Question " + (currentQuestion + 1) + " of " + questions.length;
 
-  for (let i = 1; i <= 6; i++) {
-    const selected = document.querySelector(`input[name="Q${i}"]:checked`);
-    if (!selected) {
-      alert("Please answer all questions.");
-      return;
-    }
-    total += parseInt(selected.value);
-  }
+  document.getElementById("questionText").innerText = q.text;
 
-  let profile = "Unknown";
+  const container = document.getElementById("optionsContainer");
+  container.innerHTML = "";
 
-  for (let slab of RISK_PROFILE_SLABS) {
-    if (total >= slab.min && total <= slab.max) {
-      profile = slab.profile;
-      break;
-    }
-  }
-
-  const resultDiv = document.getElementById("result");
-  resultDiv.style.display = "block";
-  resultDiv.innerHTML =
-    `<h3>Your Risk Profile</h3>
-     <div style="font-size:22px;font-weight:600;margin:10px 0;">${profile}</div>`;
+  q.options.forEach(opt => {
+    container.innerHTML += `
+      <label class="option">
+        <input type="radio" name="option" value="${opt.score}">
+        <div class="option-text">${opt.text}</div>
+      </label>
+    `;
+  });
 }
+
+function nextQuestion() {
+  const selected = document.querySelector('input[name="option"]:checked');
+  if (!selected) {
+    alert("Please select an option.");
+    return;
+  }
+
+  totalScore += parseInt(selected.value);
+  currentQuestion++;
+
+  if (currentQuestion < questions.length) {
+    loadQuestion();
+  } else {
+    showResult();
+  }
+}
+
+function determineRiskProfile(score) {
+  for (let slab of RISK_PROFILE_SLABS) {
+    if (score >= slab.min && score <= slab.max) {
+      return slab.profile;
+    }
+  }
+  return "Unknown";
+}
+
+function showResult() {
+  document.getElementById("questionContainer").classList.add("hidden");
+  document.getElementById("resultContainer").classList.remove("hidden");
+
+  const profile = determineRiskProfile(totalScore);
+
+  document.getElementById("finalProfile").innerText = profile;
+  document.getElementById("finalScore").innerText =
+    "Total Score: " + totalScore;
+}
+
+loadQuestion();
 
 </script>
 
